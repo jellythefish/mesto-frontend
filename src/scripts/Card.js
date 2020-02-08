@@ -1,4 +1,6 @@
-class Card {
+import {serverAPI} from "./script"
+
+export default class Card {
     constructor(name, link, likeCounter, cardOwner, cardID, isLikedByMe) {
         this.likeCounter = likeCounter;
         this.isLikedByMe = isLikedByMe;

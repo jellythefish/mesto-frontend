@@ -1,19 +1,25 @@
+import "../pages/index.css"
+import Card from "./Card"
+import CardList from "./CardList"
+import Popup from "./Popup"
+import ServerAPI from "./serverAPI"
+
 const addCardPopupElement = document.querySelector(".js-popup-add");
 const addCardPopupForm = document.forms["new-card"];
 const addCardOpenButtonElement = document.querySelector(".user-info__button");
 const addCardCloseButtonElement = document.querySelector(".js-close-add");
 const addCardSubmitButtonElement = document.querySelector(".js-submit-add");
 
-const editProfilePopupElement = document.querySelector(".js-popup-edit");
-const editProfilePopupForm = document.forms["edit-profile"];
-const editProfileOpenButtonElement = document.querySelector(".user-info__edit-button");
-const editProfileCloseButtonElement = document.querySelector(".js-close-edit");
-const editProfileSubmitButtonElement = document.querySelector(".js-submit-edit");
-const profileName = document.querySelector(".user-info__name");
-const profileJob = document.querySelector(".user-info__job");
+export const editProfilePopupElement = document.querySelector(".js-popup-edit");
+export const editProfilePopupForm = document.forms["edit-profile"];
+export const editProfileOpenButtonElement = document.querySelector(".user-info__edit-button");
+export const editProfileCloseButtonElement = document.querySelector(".js-close-edit");
+export const editProfileSubmitButtonElement = document.querySelector(".js-submit-edit");
+export const profileName = document.querySelector(".user-info__name");
+export const profileJob = document.querySelector(".user-info__job");
 
 const imagePopupElement = document.querySelector(".js-popup-image");
-const imageFile = document.querySelector(".popup__image");
+export const imageFile = document.querySelector(".popup__image");
 const imageCloseButton = document.querySelector(".js-close-image");
 
 const profilePicCloseButtonElement = document.querySelector(".js-close-pic");
@@ -33,10 +39,9 @@ const profilePicPopup = new Popup(profilePhoto, profilePicCloseButtonElement, pr
 
 const TOKEN = "1cfc4850-364c-4f4b-aa01-64990e05d356";
 const GROUPID = "cohort6";
-const MYOWNERID = "8be3eb7eaf8a860614ec2a23";
+export const MYOWNERID = "8be3eb7eaf8a860614ec2a23";
 
-const serverAPI = new ServerAPI(TOKEN, GROUPID);
-
+export const serverAPI = new ServerAPI(TOKEN, GROUPID);
 
 serverAPI.getInitialUserInfo()
     .then(data => {
@@ -61,7 +66,7 @@ function editProfilePic(link) {
 }
 
 // функция, задающая стили кнопки submit в формах
-function setButtonState(button, state) {
+export function setButtonState(button, state) {
     if (state === "enable") {
         button.removeAttribute('disabled');
         button.style.backgroundColor = "#000";
@@ -174,27 +179,3 @@ editProfilePopupForm.addEventListener('input', inputHandler);
 editProfilePopupForm.addEventListener('submit', processForm);
 profilePicPopupForm.addEventListener('input', inputHandler);
 profilePicPopupForm.addEventListener('submit', processForm);
-
-/** REVIEW: В целом по работе:
- * Отличная работа. Функциональность работает без багов, выполнены все дополнительные задания.
- *
- * Что сделано хорошо:
- * - Реализована смена аватара
- * - Реализована индикация загрузки
- * - Реализован лайк\дизлайк
- * - Реализовано добавление\удаление карточки
- * - Код хорошо структурирован и разбит на классы
- * - Реализован вывод ошибки пользователю
- *
- * Что можно улучшить(необязательно):
- * - В блоках catch в serverAPI.js ошибка пробрасывается дальше по цепочке, ничего с ней не делая.
- * Эти блоки можно опустить или хотя бы вывести ошибку в консоль. Можно для простоты завести метод
- * logErrors: err => {console.error(err); throw new Error(err);} и переиспользовать его во всех
- * методах как .catch(this.logErrors). Таким образом реализуется примитивный логгер для всех ошибок запросов.
- * - Отрефакторить с промисов на async-функции
- *https://medium.com/@stasonmars/%D0%BF%D0%BE%D0%BB%D0%BD%D0%BE%D0%B5-%D0%BF%D0%BE%D0%BD%D0%B8%D0%BC%D0%B0%D0%BD%D0%B8%D0%B5-%D1%81%D0%B8%D0%BD%D1%85%D1%80%D0%BE%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE-%D0%B8-%D0%B0%D1%81%D0%B8%D0%BD%D1%85%D1%80%D0%BE%D0%BD%D0%BD%D0%BE%D0%B3%D0%BE-javascript-%D1%81-async-await-ba5f47f4436
- **/
-
-/*
-   Спасибо большое за ревью, очень информативно, все ошибки понял, исправил!
- */
