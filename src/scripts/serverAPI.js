@@ -2,7 +2,7 @@ export default class ServerAPI {
     constructor(token, groupID) {
         this.token = token;
         this.groupID = groupID;
-        this.initialURL = `http://95.216.175.5/${this.groupID}`
+        this.initialURL = NODE_ENV === 'development' ? `http://praktikum.tk/${this.groupID}` : `https://praktikum.tk/${this.groupID}`
     }
 
     getInitialUserInfo() {
