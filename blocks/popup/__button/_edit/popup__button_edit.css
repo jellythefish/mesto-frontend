@@ -1,0 +1,7 @@
+.popup__button_edit {
+    font-size: 18px;
+    line-height: 22px;
+    background-color: #000;
+    color: #FFF;
+    cursor: pointer;
+}
