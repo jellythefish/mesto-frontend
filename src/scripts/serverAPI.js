@@ -1,11 +1,8 @@
-class ServerAPI {
+export default class ServerAPI {
     constructor(token, groupID) {
-        /** REVIEW: Отлично!:
-        *   Переиспользуются базовый URl и токен
-        **/
         this.token = token;
         this.groupID = groupID;
-        this.initialURL = `http://95.216.175.5/${this.groupID}`
+        this.initialURL = NODE_ENV === 'development' ? `http://praktikum.tk/${this.groupID}` : `https://praktikum.tk/${this.groupID}`
     }
 
     getInitialUserInfo() {
@@ -20,9 +17,6 @@ class ServerAPI {
                 }
                 return Promise.reject(`Ошибка: ${res.status}`);
             })
-            /** REVIEW: Можно лучше:
-            *   Этот catch ничего не делает фактически, только пробрасывает ошибку дальше, его можно опустить
-            **/
             .catch(err => Promise.reject(err));
     }
 
@@ -38,9 +32,6 @@ class ServerAPI {
                 }
                 return Promise.reject(`Ошибка: ${res.status}`);
             })
-            /** REVIEW: Можно лучше:
-             *   Этот catch ничего не делает фактически, только пробрасывает ошибку дальше, его можно опустить
-             **/
             .catch(err => Promise.reject(err));
     }
 
@@ -62,9 +53,6 @@ class ServerAPI {
                 }
                 return Promise.reject(`Ошибка: ${res.status}`);
             })
-            /** REVIEW: Можно лучше:
-             *   Этот catch ничего не делает фактически, только пробрасывает ошибку дальше, его можно опустить
-             **/
             .catch(err => Promise.reject(err));
     }
 
@@ -86,9 +74,6 @@ class ServerAPI {
                 }
                 return Promise.reject(`Ошибка: ${res.status}`);
             })
-            /** REVIEW: Можно лучше:
-             *   Этот catch ничего не делает фактически, только пробрасывает ошибку дальше, его можно опустить
-             **/
             .catch(err => Promise.reject(err));
     }
 
@@ -105,9 +90,6 @@ class ServerAPI {
                 }
                 return Promise.reject(`Ошибка: ${res.status}`);
             })
-            /** REVIEW: Можно лучше:
-             *   Этот catch ничего не делает фактически, только пробрасывает ошибку дальше, его можно опустить
-             **/
             .catch(err => Promise.reject(err));
     }
 
@@ -125,9 +107,6 @@ class ServerAPI {
                 }
                 return Promise.reject(`Ошибка: ${res.status}`);
             })
-            /** REVIEW: Можно лучше:
-             *   Этот catch ничего не делает фактически, только пробрасывает ошибку дальше, его можно опустить
-             **/
             .catch(err => Promise.reject(err));
     }
 
@@ -148,9 +127,6 @@ class ServerAPI {
                 }
                 return Promise.reject(`Ошибка: ${res.status}`);
             })
-            /** REVIEW: Можно лучше:
-             *   Этот catch ничего не делает фактически, только пробрасывает ошибку дальше, его можно опустить
-             **/
             .catch(err => Promise.reject(err));
     }
 }

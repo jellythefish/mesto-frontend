@@ -1,4 +1,14 @@
-class Popup {
+import {
+    editProfileOpenButtonElement, 
+    editProfileCloseButtonElement,
+    editProfilePopupForm,
+    imageFile,
+    profileName,
+    profileJob,
+    editProfileSubmitButtonElement,
+    setButtonState
+} from "./script"
+export default class Popup {
     constructor(openButton, closeButton, popupElement, submitButton) {
         this.popupElement = popupElement;
         this.submitButton = submitButton;

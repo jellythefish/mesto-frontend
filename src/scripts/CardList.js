@@ -1,4 +1,7 @@
-class CardList {
+import Card from "./Card"
+import {serverAPI} from "./script"
+import {MYOWNERID} from "./script"
+export default class CardList {
     constructor(container, initialCards, imagePopup) {
         this.container = container;
         this.list = [];
@@ -23,9 +26,6 @@ class CardList {
         if (event.target.classList.contains("place-card__like-icon")) {
             currentCard.like();
         } else if (event.target.classList.contains("place-card__delete-icon")) {
-            /** REVIEW: Отлично:
-            *   Реализовано подтверждение удаления
-            **/
             const option = window.confirm("Вы действительно хотите удалить эту карточку?");
             if (option) {
                 serverAPI.deleteCard(currentCard.cardID)
