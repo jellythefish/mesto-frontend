@@ -41,20 +41,22 @@ const TOKEN = "1cfc4850-364c-4f4b-aa01-64990e05d356";
 const GROUPID = "cohort6";
 export const MYOWNERID = "8be3eb7eaf8a860614ec2a23";
 
-export const serverAPI = new ServerAPI(TOKEN, GROUPID);
-
-serverAPI.getInitialUserInfo()
-    .then(data => {
-        renderProfileData(data.name, data.about);
-        editProfilePic(data.avatar);
-    })
+function initialize(serverAPI, cardList) {
+    serverAPI.getInitialUserInfo()
+        .then(data => {
+            renderProfileData(data.name, data.about);
+            editProfilePic(data.avatar);
+        })
     .catch(err => window.alert(err));
+    serverAPI.loadInitialCards()
+        .then(cards => {
+            cardList = new CardList(document.querySelector(".places-list"), cards, imagePopup);
+        });
+}
 
-let cardList;
-serverAPI.loadInitialCards()
-    .then(cards => {
-        cardList = new CardList(document.querySelector(".places-list"), cards, imagePopup);
-});
+export const serverAPI = new ServerAPI(TOKEN, GROUPID);
+let cardList = {}; 
+initialize(serverAPI, cardList);
 
 function renderProfileData(authorName, about) {
     profileName.textContent = authorName;
