@@ -98,7 +98,7 @@ function initialize(serverAPI, cardList) {
 }
 
 function logout(event) {
-    document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 GMT"
+    document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 GMT; domain=.the-mesto.tk; path=/;"
     location.reload();
 }
 
