@@ -4,6 +4,19 @@ import CardList from "./CardList"
 import Popup from "./Popup"
 import ServerAPI from "./serverAPI"
 
+const signInPopupElement = document.querySelector(".js-popup-sign-in");
+const signInPopupForm = document.forms["sign-in"];
+const signInOpenButtonElement = document.querySelector(".header__login-button");
+const signInCloseButtonElement = document.querySelector(".js-close-sign-in");
+const signInSubmitButtonElement = document.querySelector(".js-submit-sign-in");
+const signOutButtonElement = document.querySelector('.header__logout-button');
+
+const signUpPopupElement = document.querySelector(".js-popup-sign-up");
+const signUpPopupForm = document.forms["sign-up"];
+export const signUpOpenButtonElement = document.querySelector(".sign-up__link");
+export const signUpCloseButtonElement = document.querySelector(".js-close-sign-up");
+const signUpSubmitButtonElement = document.querySelector(".js-submit-sign-up");
+
 const addCardPopupElement = document.querySelector(".js-popup-add");
 const addCardPopupForm = document.forms["new-card"];
 const addCardOpenButtonElement = document.querySelector(".user-info__button");
@@ -26,37 +39,75 @@ const profilePicCloseButtonElement = document.querySelector(".js-close-pic");
 const profilePicPopupElement = document.querySelector(".js-popup-pic");
 const profilePicSubmitButtonElement = document.querySelector(".js-submit-pic");
 const profilePicPopupForm = document.forms["profile-pic"];
-
 const profilePhoto = document.querySelector(".user-info__photo");
 
-const addCardPopup = new Popup(addCardOpenButtonElement, addCardCloseButtonElement, addCardPopupElement,
-    addCardSubmitButtonElement);
-const editProfilePopup = new Popup(editProfileOpenButtonElement, editProfileCloseButtonElement, editProfilePopupElement,
-    editProfileSubmitButtonElement);
-const imagePopup = new Popup(undefined, imageCloseButton, imagePopupElement);
-const profilePicPopup = new Popup(profilePhoto, profilePicCloseButtonElement, profilePicPopupElement,
-    profilePicSubmitButtonElement);
 
-const TOKEN = "1cfc4850-364c-4f4b-aa01-64990e05d356";
-const GROUPID = "cohort6";
-export const MYOWNERID = "8be3eb7eaf8a860614ec2a23";
+export const signInPopup = new Popup(signInOpenButtonElement, signInCloseButtonElement, signInPopupElement,
+    signInSubmitButtonElement);
+const signUpPopup = new Popup(signUpOpenButtonElement, signUpCloseButtonElement, signUpPopupElement,
+    signUpSubmitButtonElement);
+
+signInPopupForm.addEventListener('input', inputHandler);
+signInPopupForm.addEventListener('submit', processForm);
+signUpPopupForm.addEventListener('input', inputHandler);
+signUpPopupForm.addEventListener('submit', processForm);
+signOutButtonElement.addEventListener('click', logout);
+
+let addCardPopup = {};
+let editProfilePopup = {};
+let imagePopup = {};
+let profilePicPopup = {};
+
+let JWT_TOKEN = document.cookie;
+export let USER_ID = "";
+export const serverAPI = new ServerAPI();
+let cardList = {};
+
+if (JWT_TOKEN) {
+    initialize(serverAPI, cardList);
+};
 
 function initialize(serverAPI, cardList) {
+    addCardPopup = new Popup(addCardOpenButtonElement, addCardCloseButtonElement, addCardPopupElement,
+        addCardSubmitButtonElement);
+    editProfilePopup = new Popup(editProfileOpenButtonElement, editProfileCloseButtonElement, editProfilePopupElement,
+        editProfileSubmitButtonElement);
+    imagePopup = new Popup(undefined, imageCloseButton, imagePopupElement);
+    profilePicPopup = new Popup(profilePhoto, profilePicCloseButtonElement, profilePicPopupElement,
+        profilePicSubmitButtonElement);
+    addCardPopupForm.addEventListener('input', inputHandler);
+    addCardPopupForm.addEventListener('submit', processForm);
+    editProfilePopupForm.addEventListener('input', inputHandler);
+    editProfilePopupForm.addEventListener('submit', processForm);
+    profilePicPopupForm.addEventListener('input', inputHandler);
+    profilePicPopupForm.addEventListener('submit', processForm);
+    signInOpenButtonElement.classList.add('header__login-button_hidden');
+    signOutButtonElement.classList.remove('header__logout-button_hidden');
     serverAPI.getInitialUserInfo()
-        .then(data => {
-            renderProfileData(data.name, data.about);
-            editProfilePic(data.avatar);
+        .then(res => {
+            renderProfileData(res.name, res.about);
+            editProfilePic(res.avatar);
+            USER_ID = res._id;
+            displayContent();
         })
     .catch(err => window.alert(err));
     serverAPI.loadInitialCards()
         .then(cards => {
-            cardList = new CardList(document.querySelector(".places-list"), cards, imagePopup);
+            cardList = new CardList(document.querySelector(".places-list"), cards.data, imagePopup);
         });
 }
 
-export const serverAPI = new ServerAPI(TOKEN, GROUPID);
-let cardList = {}; 
-initialize(serverAPI, cardList);
+function logout(event) {
+    document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 GMT"
+    location.reload();
+}
+
+function displayContent() {
+    const profile = document.querySelector('.profile');
+    profile.style.display = "flex";
+    const placesList = document.querySelector('.places-list');
+    placesList.style.display = "grid";
+}
 
 function renderProfileData(authorName, about) {
     profileName.textContent = authorName;
@@ -118,16 +169,54 @@ function processForm(event) {
                 resetForm();
             })
             .catch(err => window.alert(err));
+    } else if (event.target === signInPopupForm) {
+        const email = signInPopupForm.elements.email.value;
+        const password = signInPopupForm.elements.password.value;
+        signInPopup.renderLoading(true);
+        serverAPI.signIn(email, password)
+            .then((res) => {
+                USER_ID = res._id;
+                initialize(serverAPI, cardList);
+                resetForm();
+                signInPopup.close(event);
+            })
+            .catch((err) => window.alert(err));
+    } else if (event.target === signUpPopupForm) {
+        const name = signUpPopupForm.elements.name.value;
+        const about = signUpPopupForm.elements.about.value;
+        const avatar = signUpPopupForm.elements.avatar.value;
+        const email = signUpPopupForm.elements.email.value;
+        const password = signUpPopupForm.elements.password.value;
+        signUpPopup.renderLoading(true);
+        serverAPI.signUp(name, about, avatar, email, password)
+            .then((res) => {
+                resetForm();
+                renderSuccess(document.querySelector('.js-popup-content-sign-up'));
+            })
+            .catch((err) => window.alert(err));
     }
 
     function resetForm() {
         const currentForm = event.target.closest("form");
         const currentSubmitButton = Array.from(currentForm).find(elem => elem.classList.contains("popup__button"));
         currentForm.reset();
-        if (currentSubmitButton.classList.contains("js-submit-add") ||  currentSubmitButton.classList.contains("js-submit-pic")) {
+        if (currentSubmitButton.classList.contains("js-submit-add") ||  currentSubmitButton.classList.contains("js-submit-pic") || 
+        currentSubmitButton.classList.contains("js-submit-sign-in") || currentSubmitButton.classList.contains("js-submit-sign-up")) {
             setButtonState(currentSubmitButton, "disable");
         }
     }
+}
+
+function renderSuccess(element) {
+    element.children[1].style.display = 'none';
+    element.children[2].style.display = 'none';
+    element.style['min-height'] = '50px';
+    const ok = document.createElement('h4');
+    ok.classList.add('popup__status');
+    ok.textContent = "Вы успешно зарегистрировались!";
+    ok.style['text-align'] = 'center'
+    ok.style['font-size'] = '20px';
+    element.appendChild(ok);
 }
 
 // обработчик валидности введенных данных
@@ -141,8 +230,16 @@ function checkInputValidity(currentForm, currentInput) {
     } else if (currentInput.validity.tooShort || currentInput.validity.tooLong) {
         currentError.textContent = "Должно быть от 2 до 30 символов";
         return false;
-    } else if ((currentInput.name === "link" || currentInput.name === "pic-link") && !currentInput.validity.valid) {
-        currentError.textContent = "Здесь должна быть ссылка";
+    } else if ((currentInput.name === "link" || currentInput.name === "pic-link" || currentInput.name === "avatar") 
+    && !currentInput.validity.valid) {
+        currentError.textContent = "Некорректная ссылка";
+        return false;
+    } else if (currentInput.name === "email" && !currentInput.validity.valid) {
+        currentError.textContent = "Некорректный email";
+        return false;
+    } else if (currentInput.name === "password" && !currentInput.validity.valid) {
+        currentError.textContent = "от 8 символов: заглавная, прописная буква и цифра";
+        currentError.style.color = "red";
         return false;
     } else {
         currentError.textContent = "";
@@ -152,22 +249,30 @@ function checkInputValidity(currentForm, currentInput) {
 
 // обработчик ввода данных в форму
 function inputHandler(event) {
-    let firstField;
-    let secondField;
+    let fields = {};
     const currentForm = event.target.closest("form");
     const currentSubmitButton = Array.from(currentForm).find(elem => elem.classList.contains("popup__button"));
     if (currentForm === addCardPopupForm) {
-        firstField = addCardPopupForm.elements.name;
-        secondField = addCardPopupForm.elements.link;
+        fields.name = addCardPopupForm.elements.name;
+        fields.link = addCardPopupForm.elements.link;
+    } else if (currentForm === signInPopupForm) {
+        fields.email = signInPopupForm.elements.email;
+        fields.password = signInPopupForm.elements.password;
+    } else if (currentForm === signUpPopupForm) {
+        fields.name = signUpPopupForm.elements.name;
+        fields.about = signUpPopupForm.elements.about;
+        fields.avatar = signUpPopupForm.elements.avatar;
+        fields.email = signUpPopupForm.elements.email;
+        fields.password = signUpPopupForm.elements.password;
     } else if (currentForm === editProfilePopupForm) {
-        firstField = editProfilePopupForm.elements["author-name"];
-        secondField = editProfilePopupForm.elements["about"];
+        fields["author-name"] = editProfilePopupForm.elements["author-name"];
+        fields.about = editProfilePopupForm.elements["about"];
     } else if (currentForm === profilePicPopupForm) {
-        firstField = profilePicPopupForm.elements["pic-link"];
-        secondField = firstField;
+        fields["pic-link"] = profilePicPopupForm.elements["pic-link"];
     }
     checkInputValidity(currentForm, event.target);
-    if (firstField.validity.valid && secondField.validity.valid) {
+    const allFieldsValid = Object.values(fields).every((elem) => elem.validity.valid);
+    if (allFieldsValid) {
         setButtonState(currentSubmitButton, "enable");
     } else {
         setButtonState(currentSubmitButton, "disable");
@@ -175,9 +280,3 @@ function inputHandler(event) {
 }
 
 /* Слушатели событий */
-addCardPopupForm.addEventListener('input', inputHandler);
-addCardPopupForm.addEventListener('submit', processForm);
-editProfilePopupForm.addEventListener('input', inputHandler);
-editProfilePopupForm.addEventListener('submit', processForm);
-profilePicPopupForm.addEventListener('input', inputHandler);
-profilePicPopupForm.addEventListener('submit', processForm);

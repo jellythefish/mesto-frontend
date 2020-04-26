@@ -6,7 +6,9 @@ import {
     profileName,
     profileJob,
     editProfileSubmitButtonElement,
-    setButtonState
+    setButtonState,
+    signUpOpenButtonElement,
+    signInPopup
 } from "./script"
 export default class Popup {
     constructor(openButton, closeButton, popupElement, submitButton) {
@@ -37,6 +39,14 @@ export default class Popup {
             let imageURL = event.target.style.backgroundImage;
             imageURL = imageURL.slice(5, -2);
             imageFile.setAttribute("src", imageURL);
+        } else if (event.target === signUpOpenButtonElement) { // closing sign-in popup while opening sign-up popup
+            signInPopup.popupElement.classList.toggle("popup_is-opened");
+            const ok = document.querySelector('.popup__status');
+            if (ok) {
+                ok.remove();
+            }
+            document.querySelector('.js-popup-content-sign-up').children.forEach((child) => child.style.display = 'block');
+
         }
     }
     renderLoading(isLoading) {
@@ -50,9 +60,10 @@ export default class Popup {
             if (this.submitButton.classList.contains("js-submit-add")) {
                 this.submitButton.style.fontSize = "36px";
                 this.submitButton.textContent = "+";
-            } else {
-                this.submitButton.style.fontSize = "18px";
-                this.submitButton.textContent = "Сохранить";
+            } else if (this.submitButton.classList.contains("js-submit-sign-in")) {
+                this.submitButton.textContent = "Войти";
+            } else if (this.submitButton.classList.contains("js-submit-sign-up")) {
+                this.submitButton.textContent = "Зарегистрироваться";
             }
         }
     }

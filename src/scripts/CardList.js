@@ -1,6 +1,6 @@
 import Card from "./Card"
 import {serverAPI} from "./script"
-import {MYOWNERID} from "./script"
+import {USER_ID} from "./script"
 export default class CardList {
     constructor(container, initialCards, imagePopup) {
         this.container = container;
@@ -15,8 +15,8 @@ export default class CardList {
     }
     render(cardList) {
         cardList.forEach((item) => {
-            const cardOwner = item.owner._id === MYOWNERID ? "me" : "others";
-            const isLikedByMe = item.likes.find(user => user._id === MYOWNERID);
+            const cardOwner = item.owner === USER_ID ? "me" : "others";
+            const isLikedByMe = item.likes.find(id => id === USER_ID);
             const card = new Card(item.name, item.link, item.likes.length, cardOwner, item._id, isLikedByMe);
             this.addCard(card);
         })

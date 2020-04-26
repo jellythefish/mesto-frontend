@@ -10,7 +10,8 @@
 @import url("./__content/_image/popup__content_image.css");
 @import url("./__button/_pic/popup__button_pic.css");
 @import url("./__button/_edit/popup__button_edit.css");
-
+@import url("./__button/_sign-in/popup__button_sign-in.css");
+@import url("./__button/_sign-up/popup__button_sign-up.css");
 
 .popup {
   position: fixed;

@@ -11,6 +11,8 @@
   <div class="root">
     <header class="header root__section">
       <img src="<%=require('./images/logo.svg').default%>" alt="mesto logo" class="logo">
+      <button class="button header__login-button">Авторизоваться</button>
+      <button class="button header__logout-button header__logout-button_hidden">Выйти</button>
     </header>
     <div class="profile root__section">
       <div class="user-info">
@@ -22,21 +24,55 @@
         </div>
         <button class="button user-info__button">+</button>
       </div>
-
     </div>
 
     <div class="places-list root__section"></div>
+
+    <div class="popup js-popup-sign-in">
+      <div class="popup__content">
+        <img src="<%= require('./images/close.svg').default %>" alt="" class="popup__close js-close-sign-in">
+        <h3 class="popup__title">Вход</h3>
+        <form class="popup__form" name="sign-in">
+          <input required type="email" name="email" class="popup__input popup__input_type_email" placeholder="E-mail">
+          <p class="popup__error-message" data-for-element="email"></p>
+          <input required type="password" name="password" class="popup__input popup__input_type_password" placeholder="Пароль">
+          <p class="popup__error-message" data-for-element="password"></p>
+          <button type="submit" class="button popup__button popup__button_sign-in js-submit-sign-in" disabled>Войти</button>
+          <p class="sign-up">или <a class="sign-up__link">Зарегистрироваться</a></p>
+        </form>
+      </div>
+    </div>
+
+    <div class="popup js-popup-sign-up">
+      <div class="popup__content js-popup-content-sign-up">
+        <img src="<%= require('./images/close.svg').default %>" alt="" class="popup__close js-close-sign-up">
+        <h3 class="popup__title">Регистрация</h3>
+        <form class="popup__form" name="sign-up">
+          <input required type="text" name="name" minlength="2" maxlength="30" class="popup__input popup__input_type_name" placeholder="Имя">
+          <p class="popup__error-message" data-for-element="name"></p>
+          <input required type="text" name="about" minlength="2" maxlength="30" class="popup__input popup__input_type_about" placeholder="О себе">
+          <p class="popup__error-message" data-for-element="about"></p>
+          <input required type="url" name="avatar" class="popup__input popup__input_type_avatar" placeholder="Ссылка на фото профиля">
+          <p class="popup__error-message" data-for-element="avatar"></p>
+          <input required type="email" name="email" class="popup__input popup__input_type_email" placeholder="E-mail">
+          <p class="popup__error-message" data-for-element="email"></p>
+          <input required type="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" class="popup__input popup__input_type_password" placeholder="Пароль">
+          <p class="popup__error-message" style="color: gray;" data-for-element="password">от 8 символов: заглавная, прописная буква и цифра</p>
+          <button type="submit" class="button popup__button popup__button_sign-up js-submit-sign-up" disabled>Зарегистрироваться</button>
+        </form>
+      </div>
+    </div>
 
     <div class="popup js-popup-add">
       <div class="popup__content">
         <img src="<%= require('./images/close.svg').default %>" alt="" class="popup__close js-close-add">
         <h3 class="popup__title">Новое место</h3>
         <form class="popup__form" name="new-card">
-            <input required type="text" name="name" minlength="2" maxlength="30" class="popup__input popup__input_type_name" placeholder="Название">
-            <p class="popup__error-message" data-for-element="name"></p>
-            <input required type="url" name="link" class="popup__input popup__input_type_link-url" placeholder="Ссылка на картинку">
-            <p class="popup__error-message" data-for-element="link"></p>
-            <button type="submit" class="button popup__button js-submit-add" disabled>+</button>
+          <input required type="text" name="name" minlength="2" maxlength="30" class="popup__input popup__input_type_name" placeholder="Название">
+          <p class="popup__error-message" data-for-element="name"></p>
+          <input required type="url" name="link" class="popup__input popup__input_type_link-url" placeholder="Ссылка на картинку">
+          <p class="popup__error-message" data-for-element="link"></p>
+          <button type="submit" class="button popup__button js-submit-add" disabled>+</button>
         </form>
       </div>
     </div>

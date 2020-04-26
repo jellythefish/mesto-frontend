@@ -1,0 +1,15 @@
+@import url(./_hidden/header__login-button_hidden.css);
+
+.header__login-button {
+    font-size: 17px !important;
+    position: absolute;
+    right: 0px;
+}
+
+@media screen and (max-width: 360px) {
+    .header__login-button {
+        height: 13.8vw !important;
+        width: 40vw !important;
+        font-size: 4.5vw !important;
+    }
+  }

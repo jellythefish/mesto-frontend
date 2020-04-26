@@ -1,0 +1,17 @@
+@import url(./_hidden/header__logout-button_hiden.css);
+
+.header__logout-button {
+    font-size: 17px !important;
+    position: absolute;
+    right: 0px;
+}
+
+@media screen and (max-width: 360px) {
+    .header__logout-button {
+        height: 13.8vw !important;
+        width: 40vw !important;
+        font-size: 4.5vw !important;
+    }
+  }
+  
+  
