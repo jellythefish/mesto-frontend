@@ -64,10 +64,10 @@ export const serverAPI = new ServerAPI();
 let cardList = {};
 
 if (JWT_TOKEN) {
-    initialize(serverAPI, cardList);
+    initialize();
 };
 
-function initialize(serverAPI, cardList) {
+function initialize() {
     addCardPopup = new Popup(addCardOpenButtonElement, addCardCloseButtonElement, addCardPopupElement,
         addCardSubmitButtonElement);
     editProfilePopup = new Popup(editProfileOpenButtonElement, editProfileCloseButtonElement, editProfilePopupElement,
@@ -142,7 +142,7 @@ function processForm(event) {
         addCardPopup.renderLoading(true);
         serverAPI.addNewCard(placeName, imageLink)
             .then((res) => {
-                const card = new Card(placeName, imageLink, 0, "me", res._id, false);
+                const card = new Card(placeName, imageLink, 0, "me", res.data._id, false);
                 cardList.addCard(card);
                 addCardPopup.close(event);
                 resetForm();

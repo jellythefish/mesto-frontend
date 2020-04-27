@@ -14,12 +14,14 @@ export default class CardList {
         this.list.push(card);
     }
     render(cardList) {
-        cardList.forEach((item) => {
-            const cardOwner = item.owner === USER_ID ? "me" : "others";
-            const isLikedByMe = item.likes.find(id => id === USER_ID);
-            const card = new Card(item.name, item.link, item.likes.length, cardOwner, item._id, isLikedByMe);
-            this.addCard(card);
-        })
+        if (cardList) {
+            cardList.forEach((item) => {
+                const cardOwner = item.owner === USER_ID ? "me" : "others";
+                const isLikedByMe = item.likes.find(id => id === USER_ID);
+                const card = new Card(item.name, item.link, item.likes.length, cardOwner, item._id, isLikedByMe);
+                this.addCard(card);
+            })
+        }
     }
     cardHandler(event) {
         const currentCard = this.list.find(elem  => elem.cardElement === event.target.closest(".place-card"));

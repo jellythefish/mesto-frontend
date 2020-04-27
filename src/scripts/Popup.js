@@ -22,6 +22,7 @@ export default class Popup {
     open(event) {
         this.popupElement.classList.toggle("popup_is-opened");
         this.render(event);
+        this.renderLoading(false);
     }
     close(event) {
         this.popupElement.classList.toggle("popup_is-opened");
@@ -64,6 +65,8 @@ export default class Popup {
                 this.submitButton.textContent = "Войти";
             } else if (this.submitButton.classList.contains("js-submit-sign-up")) {
                 this.submitButton.textContent = "Зарегистрироваться";
+            } else if (this.submitButton.classList.contains("js-submit-edit") || this.submitButton.classList.contains("js-submit-pic")) {
+                this.submitButton.textContent = "Сохранить";
             }
         }
     }
