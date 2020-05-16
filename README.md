@@ -2,7 +2,7 @@
 
 [![version](https://img.shields.io/badge/version-1.0.2-blue.svg)](https://github.com/jellythefish/mesto/tree/v1.0.2) 
 
-https://jellythefish.github.io/mesto
+https://jellythefish.github.io/mesto-frontend
 
 ## О проекте
 
