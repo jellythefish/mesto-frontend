@@ -2,6 +2,8 @@
 
 [![version](https://img.shields.io/badge/version-1.0.2-blue.svg)](https://github.com/jellythefish/mesto/tree/v1.0.2) 
 
+URL: https://the-mesto.tk
+
 ![Preview](src/images/preview.png)
 
 ## О проекте
@@ -57,4 +59,7 @@
    ```
 
    Окно с приложением откроется автоматически.
+   
+## TO-DO
+- \[ ] оформить главную страницу
 
